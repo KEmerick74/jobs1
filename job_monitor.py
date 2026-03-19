@@ -7,9 +7,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
 
-OUTLOOK_EMAIL = os.getenv("OUTLOOK_EMAIL")
-OUTLOOK_PASSWORD = os.getenv("OUTLOOK_PASSWORD")
-RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
+  GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+  GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+  RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
 
 KEYWORDS = [
     "senior manager", "director", "delivery", "client success",
