@@ -2,29 +2,32 @@ name: Daily Job Monitor
 
 on:
   schedule:
-    - cron: "0 11 * * *"   # 7 AM Eastern (11:00 UTC)
+    - cron: "0 12 * * *"   # Runs every day at 12:00 UTC (7 AM Eastern)
   workflow_dispatch:
 
 jobs:
-  run-script:
+  run-job-monitor:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests beautifulsoup4 lxml openpyxl
 
       - name: Run job monitor
         env:
-          env:
-  GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
-  GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-  RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
-        run: python job_monitor.py
+          GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          python job_monitor.py
+
