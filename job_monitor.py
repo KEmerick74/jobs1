@@ -7,10 +7,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
 
-  GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
-  GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-  RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
-
 KEYWORDS = [
     "senior manager", "director", "delivery", "client success",
     "operations", "implementation", "program manager", "project manager"
@@ -131,7 +127,6 @@ for company, url in WORKDAY_COMPANIES.items():
 df = pd.DataFrame(all_jobs, columns=["Title", "Company", "Location", "URL", "Source"])
 df.to_excel("job_report.xlsx", index=False)
 
-
 msg = MIMEMultipart()
 msg["From"] = os.getenv("GMAIL_EMAIL")
 msg["To"] = os.getenv("RECIPIENT_EMAIL")
@@ -147,5 +142,3 @@ with smtplib.SMTP("smtp.gmail.com", 587) as server:
     server.starttls()
     server.login(os.getenv("GMAIL_EMAIL"), os.getenv("GMAIL_APP_PASSWORD"))
     server.send_message(msg)
-
-
