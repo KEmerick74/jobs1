@@ -131,19 +131,21 @@ for company, url in WORKDAY_COMPANIES.items():
 df = pd.DataFrame(all_jobs, columns=["Title", "Company", "Location", "URL", "Source"])
 df.to_excel("job_report.xlsx", index=False)
 
+
 msg = MIMEMultipart()
-msg["From"] = OUTLOOK_EMAIL
-msg["To"] = RECIPIENT_EMAIL
+msg["From"] = os.getenv("GMAIL_EMAIL")
+msg["To"] = os.getenv("RECIPIENT_EMAIL")
 msg["Subject"] = "Daily Job Report"
 msg.attach(MIMEText("Attached is your daily job report.", "plain"))
 
 with open("job_report.xlsx", "rb") as f:
     part = MIMEApplication(f.read(), Name="job_report.xlsx")
-    part["Content-Disposition"] = 'attachment; filename="job_report.xlsx"'
+    part["Content-Disposition"] = 'attachment; filename=\"job_report.xlsx\"'
     msg.attach(part)
 
-with smtplib.SMTP("smtp.office365.com", 587) as server:
+with smtplib.SMTP("smtp.gmail.com", 587) as server:
     server.starttls()
-    server.login(OUTLOOK_EMAIL, OUTLOOK_PASSWORD)
+    server.login(os.getenv("GMAIL_EMAIL"), os.getenv("GMAIL_APP_PASSWORD"))
     server.send_message(msg)
+
 
